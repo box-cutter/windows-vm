@@ -1,3 +1,5 @@
+@echo off
+
 :: Uncomment the following to set a different Cygwin mirror
 :: Default: http://mirrors.kernel.org/sourceware/cygwin
 :: set CYGWIN_MIRROR_URL=http://mirrors.kernel.org/sourceware/cygwin
