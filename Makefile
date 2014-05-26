@@ -571,6 +571,9 @@ list:
 	@echo ""
 	@echo "Targets:"
 	@for shortcut_target in $(SHORTCUT_TARGETS) ; do \
+		if test -f $$shortcut_target\-cygwin.json ; then \
+		  echo $$shortcut_target\-cygwin ; \
+		fi ; \
 		echo $$shortcut_target ; \
 	done
 
