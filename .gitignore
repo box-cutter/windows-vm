@@ -8,5 +8,5 @@ tmp
 .vagrant/
 *.swp
 Makefile.local
-
 .DS_Store
+floppy/_packer_config_local.cmd
