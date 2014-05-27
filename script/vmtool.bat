@@ -15,13 +15,11 @@ goto main
 :find_unzip_vbs
 ::::::::::::
 
-set UNZIP_VBS=a:\unzip.vbs
+for %%i in ("%TEMP%" %PACKER_SEARCH_PATHS%) do if exist "%%~i\unzip.vbs" set UNZIP_VBS=%%~i\unzip.vbs
 
 if exist "%UNZIP_VBS%" goto :eof
 
 set UNZIP_VBS=%TEMP%\unzip.vbs
-
-if exist "%UNZIP_VBS%" goto :eof
 
 echo Set fso = CreateObject("Scripting.FileSystemObject")>"%UNZIP_VBS%"
 echo ZipFile=fso.GetAbsolutePathName(Wscript.Arguments(0))>>"%UNZIP_VBS%"

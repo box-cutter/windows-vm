@@ -2,6 +2,8 @@
 @for %%i in (a:\_packer_config*.cmd) do @call "%%~i"
 @if not defined PACKER_DEBUG echo off
 
+if not defined PACKER_SEARCH_PATHS set PACKER_SEARCH_PATHS="%USERPROFILE%" a: b: c: d: e: f: g: h: i: j: k: l: m: n: o: p: q: r: s: t: u: v: w: x: y: z:
+
 if not defined ULTRADEFRAG_32_URL set ULTRADEFRAG_32_URL=http://downloads.sourceforge.net/ultradefrag/ultradefrag-portable-6.0.2.bin.amd64.zip
 if not defined ULTRADEFRAG_64_URL set ULTRADEFRAG_64_URL=http://downloads.sourceforge.net/ultradefrag/ultradefrag-portable-6.0.2.bin.i386.zip
 
@@ -11,13 +13,11 @@ goto :main
 :find_unzip_vbs
 ::::::::::::
 
-set UNZIP_VBS=a:\unzip.vbs
+for %%i in ("%TEMP%" %PACKER_SEARCH_PATHS%) do if exist "%%~i\unzip.vbs" set UNZIP_VBS=%%~i\unzip.vbs
 
 if exist "%UNZIP_VBS%" goto :eof
 
 set UNZIP_VBS=%TEMP%\unzip.vbs
-
-if exist "%UNZIP_VBS%" goto :eof
 
 echo Set fso = CreateObject("Scripting.FileSystemObject")>"%UNZIP_VBS%"
 echo ZipFile=fso.GetAbsolutePathName(Wscript.Arguments(0))>>"%UNZIP_VBS%"
