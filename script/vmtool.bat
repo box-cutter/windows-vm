@@ -12,6 +12,32 @@ if not defined VMWARE_TOOLS_TAR_URL set VMWARE_TOOLS_TAR_URL=https://softwareupd
 goto main
 
 ::::::::::::
+:find_unzip_vbs
+::::::::::::
+
+set UNZIP_VBS=a:\unzip.vbs
+
+if exist "%UNZIP_VBS%" goto :eof
+
+set UNZIP_VBS=%TEMP%\unzip.vbs
+
+if exist "%UNZIP_VBS%" goto :eof
+
+echo Set fso = CreateObject("Scripting.FileSystemObject")>"%UNZIP_VBS%"
+echo ZipFile=fso.GetAbsolutePathName(Wscript.Arguments(0))>>"%UNZIP_VBS%"
+echo ExtractTo=fso.GetAbsolutePathName(Wscript.Arguments(1))>>"%UNZIP_VBS%"
+echo If NOT fso.FolderExists(ExtractTo) Then>>"%UNZIP_VBS%"
+echo    fso.CreateFolder(ExtractTo)>>"%UNZIP_VBS%"
+echo End If>>"%UNZIP_VBS%"
+echo set objShell = CreateObject("Shell.Application")>>"%UNZIP_VBS%"
+echo set FilesInZip=objShell.NameSpace(ZipFile).items>>"%UNZIP_VBS%"
+echo objShell.NameSpace(ExtractTo).CopyHere(FilesInZip)>>"%UNZIP_VBS%"
+echo Set fso = Nothing>>"%UNZIP_VBS%"
+echo Set objShell = Nothing>>"%UNZIP_VBS%"
+
+goto :eof
+
+::::::::::::
 :install_sevenzip
 ::::::::::::
 
@@ -71,10 +97,12 @@ if exist "%SystemRoot%\_download.cmd" (
 )
 if not exist "%LESSMSI_PATH%" goto return1
 
-if not exist a:\unzip.vbs echo ==^> ERROR: File not found: a:\unzip.vbs & goto return1
+call :find_unzip_vbs
+
+if not exist "%UNZIP_VBS%" echo ==^> ERROR: File not found: "%UNZIP_VBS%" & goto return1
 
 echo ==^> Unzipping "%LESSMSI_PATH%" to "%LESSMSI_DIR%"
-cscript a:\unzip.vbs //b "%LESSMSI_PATH%" "%LESSMSI_DIR%"
+cscript "%UNZIP_VBS%" //b "%LESSMSI_PATH%" "%LESSMSI_DIR%"
 
 set LESSMSI_EXE=
 

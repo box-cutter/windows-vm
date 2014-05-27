@@ -5,6 +5,38 @@
 if not defined ULTRADEFRAG_32_URL set ULTRADEFRAG_32_URL=http://downloads.sourceforge.net/ultradefrag/ultradefrag-portable-6.0.2.bin.amd64.zip
 if not defined ULTRADEFRAG_64_URL set ULTRADEFRAG_64_URL=http://downloads.sourceforge.net/ultradefrag/ultradefrag-portable-6.0.2.bin.i386.zip
 
+goto :main
+
+::::::::::::
+:find_unzip_vbs
+::::::::::::
+
+set UNZIP_VBS=a:\unzip.vbs
+
+if exist "%UNZIP_VBS%" goto :eof
+
+set UNZIP_VBS=%TEMP%\unzip.vbs
+
+if exist "%UNZIP_VBS%" goto :eof
+
+echo Set fso = CreateObject("Scripting.FileSystemObject")>"%UNZIP_VBS%"
+echo ZipFile=fso.GetAbsolutePathName(Wscript.Arguments(0))>>"%UNZIP_VBS%"
+echo ExtractTo=fso.GetAbsolutePathName(Wscript.Arguments(1))>>"%UNZIP_VBS%"
+echo If NOT fso.FolderExists(ExtractTo) Then>>"%UNZIP_VBS%"
+echo    fso.CreateFolder(ExtractTo)>>"%UNZIP_VBS%"
+echo End If>>"%UNZIP_VBS%"
+echo set objShell = CreateObject("Shell.Application")>>"%UNZIP_VBS%"
+echo set FilesInZip=objShell.NameSpace(ZipFile).items>>"%UNZIP_VBS%"
+echo objShell.NameSpace(ExtractTo).CopyHere(FilesInZip)>>"%UNZIP_VBS%"
+echo Set fso = Nothing>>"%UNZIP_VBS%"
+echo Set objShell = Nothing>>"%UNZIP_VBS%"
+
+goto :eof
+
+::::::::::::
+:main
+::::::::::::
+
 if exist "%SystemDrive%\Program Files (x86)" (
   set ULTRADEFRAG_URL=%ULTRADEFRAG_64_URL%
 ) else (
@@ -27,10 +59,12 @@ if exist "%SystemRoot%\_download.cmd" (
 )
 if not exist "%ULTRADEFRAG_PATH%" goto exit1
 
-if not exist a:\unzip.vbs echo ==^> ERROR: File not found: a:\unzip.vbs & goto exit1
+call :find_unzip_vbs
+
+if not exist "%UNZIP_VBS%" echo ==^> ERROR: File not found: "%UNZIP_VBS%" & goto return1
 
 echo ==^> Unzipping "%ULTRADEFRAG_PATH%" to "%ULTRADEFRAG_DIR%"
-cscript a:\unzip.vbs //b "%ULTRADEFRAG_PATH%" "%ULTRADEFRAG_DIR%"
+cscript "%UNZIP_VBS%" //b "%ULTRADEFRAG_PATH%" "%ULTRADEFRAG_DIR%"
 
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: cscript a:\unzip.vbs //b "%ULTRADEFRAG_PATH%" "%ULTRADEFRAG_DIR%"
 ver>nul
