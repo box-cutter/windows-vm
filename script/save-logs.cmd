@@ -4,11 +4,13 @@
 
 echo ==^> Saving installation logs
 
-if not exist z:\c goto exit0
+if not defined PACKER_LOG_DIR set PACKER_LOG_DIR=z:\c\packer_logs
 
-set PACKER_HOST_TMPDIR=z:\c\packer_build_logs\%COMPUTERNAME%
-mkdir "%PACKER_HOST_TMPDIR%"
-xcopy /c /i /y "%TEMP%\*.log.txt" "%PACKER_HOST_TMPDIR%"
+set PACKER_LOG_PATH=%PACKER_LOG_DIR %\%COMPUTERNAME%
+if not exist "%PACKER_LOG_PATH%" mkdir "%PACKER_LOG_PATH%"
+if not exist "%PACKER_LOG_PATH%" echo ==^> ERROR: Unable to create directory "%PACKER_LOG_PATH%" & goto exit1
+
+xcopy /c /i /y "%TEMP%\*.log.txt" "%PACKER_LOG_PATH%"
 
 :exit0
 

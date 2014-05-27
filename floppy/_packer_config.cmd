@@ -8,6 +8,11 @@
 :: Default: (unset)
 :: set PACKER_DEBUG=1
 
+:: Uncomment the following to define the directory where scripts/save-logs.cmd
+:: will save the installation logs
+:: Default: z:\c\packer_logs
+:: set PACKER_LOG_DIR=z:\c\packer_logs
+
 :: Uncomment the following to pause PACKER_PAUSE seconds after each script is
 :: run by floppy/00-run-all-scripts.cmd (unless you press Y)
 :: Default: (unset)
