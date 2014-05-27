@@ -18,8 +18,5 @@ verify other 2>nul
 
 :exit
 
-set _errorlevel_=%errorlevel%
-echo ==^> Script exiting with errorlevel %_errorlevel_%
-ping -n 5 127.0.0.1
-echo ==^> Script exiting with errorlevel %_errorlevel_%
-exit /b %_errorlevel_%
+echo ==^> Script exiting with errorlevel %ERRORLEVEL%
+exit /b %ERRORLEVEL%
