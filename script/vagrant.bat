@@ -27,6 +27,8 @@ if not exist "%USERPROFILE%\.ssh" mkdir "%USERPROFILE%\.ssh"
 echo ==^> Adding "%VAGRANT_PATH%" to "%AUTHORIZED_KEYS%"
 type "%VAGRANT_PATH%" >>"%AUTHORIZED_KEYS%"
 
+if "%USERNAME%" == "sshd_server" for %%i in (%USERPROFILE%) do set USERNAME=%%~ni
+
 echo ==^> Disabling account password expiration for user "%USERNAME%"
 wmic USERACCOUNT WHERE "Name='%USERNAME%'" set PasswordExpires=FALSE
 
