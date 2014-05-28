@@ -2,8 +2,9 @@
 @for %%i in (a:\_packer_config*.cmd) do @call "%%~i"
 @if not defined PACKER_DEBUG echo off
 
-if "%CM%" == "" echo ==^> ERROR: The "CM" variable was not found in the environment & goto exit1
-if "%CM_VERSION%" == "" echo ==^> ERROR: The "CM_VERSION" variable was not found in the environment & goto exit1
+if not defined CM echo ==^> ERROR: The "CM" variable was not found in the environment & goto exit1
+if not defined CM_VERSION echo ==^> ERROR: The "CM_VERSION" variable was not found in the environment
+if not defined CM_VERSION set CM_VERSION=latest
 
 if "%CM%" == "chef"   goto chef
 if "%CM%" == "puppet" goto puppet
