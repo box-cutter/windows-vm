@@ -4,17 +4,34 @@
 
 if "%1" == "output_debug_info" goto output_debug_info
 
-set PACKER_DEBUG_LOG=%TEMP%\packer_debug_%RANDOM%.log.txt
+set LOG_ID=%RANDOM%
+
+for /f %%a in ("%TIME%") do for /f "delims=:. tokens=1-4" %%b in ("%%a") do (
+  if %%b leq 9 (
+    set LOG_ID=0%%b-%%c-%%d.%%e
+  ) else (
+    set LOG_ID=%%b-%%c-%%d.%%e
+  )
+)
+
+set PACKER_DEBUG_LOG=%TEMP%\packer_debug_%LOG_ID%.log.txt
+
+echo ==^> Displaying debug log
+
+call "%~0" output_debug_info
+
+echo ==^> Saving debug log to "%PACKER_DEBUG_LOG%"
 
 call "%~0" output_debug_info >"%PACKER_DEBUG_LOG%"
-
-type "%PACKER_DEBUG_LOG%"
 
 if not defined PACKER_LOG_DIR set PACKER_LOG_DIR=z:\c\packer_logs
 
 set PACKER_LOG_PATH=%PACKER_LOG_DIR%\%COMPUTERNAME%
+
+echo ==^> Saving all installation files to "%PACKER_LOG_PATH%"
+
 if not exist "%PACKER_LOG_PATH%" mkdir "%PACKER_LOG_PATH%"
-if not exist "%PACKER_LOG_PATH%" echo ==^> ERROR: Unable to create directory "%PACKER_LOG_PATH%" & goto exit1
+if not exist "%PACKER_LOG_PATH%" echo ==^> WARNING: Unable to create directory "%PACKER_LOG_PATH%" & goto exit0
 
 xcopy /c /e /h /i /k /r /y "%TEMP%\*.log.txt" "%PACKER_LOG_PATH%\"
 xcopy /c /e /h /i /k /r /y "%TEMP%" "%PACKER_LOG_PATH%\temp\"
@@ -22,7 +39,9 @@ xcopy /c /e /h /i /k /r /y "%SystemRoot%\TEMP" "%PACKER_LOG_PATH%\windows_temp\"
 
 goto exit0
 
+::::::::::::
 :output_debug_info
+::::::::::::
 
 echo on
 
