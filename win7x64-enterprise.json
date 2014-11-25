@@ -99,7 +99,7 @@
         "floppy/zz-start-sshd.cmd",
         "floppy/oracle-cert.cer"
       ],
-      "tools_upload_flavor": "win",
+      "parallels_tools_flavor": "win",
       "shutdown_command": "{{ user `shutdown_command`}}",
       "disk_size": 40960,
       "prlctl": [

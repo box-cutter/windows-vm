@@ -916,10 +916,11 @@ $(PARALLELS_BOX_DIR)/win81x86-pro-cygwin$(BOX_SUFFIX): win81x86-pro-cygwin.json 
 	rm -rf $(PARALLELS_OUTPUT)
 	mkdir -p $(PARALLELS_BOX_DIR)
 	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_PRO)" -var "iso_checksum=$(WIN81_X86_PRO_CHECKSUM)" $<
-	
+
 
 list:
-	@echo "Prepend 'vmware/' or 'virtualbox/' to build only one target platform:"
+	@echo "Prepend 'vmware/' or 'virtualbox/', or 'parallels/' to build only one target"
+	@echo "platform:"
 	@echo "  make vmware/win7x64"
 	@echo ""
 	@echo "Append '-cygwin' to build with Cygwin SSH instead of the default"
