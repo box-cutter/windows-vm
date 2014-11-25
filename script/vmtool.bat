@@ -40,6 +40,9 @@ if not errorlevel 1 goto vmware
 echo "%PACKER_BUILDER_TYPE%" | findstr /I "virtualbox" >nul
 if not errorlevel 1 goto virtualbox
 
+echo "%PACKER_BUILDER_TYPE%" | findstr /I "parallels" >nul
+if not errorlevel 1 goto parallels
+
 echo ==^> ERROR: Unknown PACKER_BUILDER_TYPE: %PACKER_BUILDER_TYPE%
 
 goto :finish
@@ -76,6 +79,10 @@ del /F /S /Q "%TEMP%\virtualbox"
 
 echo ==^> Removing "%USERPROFILE%\VBoxGuestAdditions.iso"
 del /F "%USERPROFILE%\VBoxGuestAdditions.iso"
+
+goto finish
+
+:parallels
 
 goto finish
 
