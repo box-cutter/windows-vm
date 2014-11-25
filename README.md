@@ -19,7 +19,8 @@ Vagrant boxes using Packer.
 
 ## Building the Vagrant boxes
 
-To build all the boxes, you will need both VirtualBox and VMware Fusion installed.
+To build all the boxes, you will need VirtualBox, VMware Fusion, and Parallels
+Desktop installed.
 
 A GNU Make `Makefile` drives the process via the following targets:
 
@@ -27,14 +28,14 @@ A GNU Make `Makefile` drives the process via the following targets:
     make test   # Run tests against all the boxes
     make list   # Print out individual targets
     make clean  # Clean up build detritus
-    
+
 ### Tests
 
 The tests are written in [Serverspec](http://serverspec.org) and require the
 `vagrant-serverspec` plugin to be installed with:
 
     vagrant plugin install vagrant-serverspec
-    
+
 The `Makefile` has individual targets for each box type with the prefix
 `test-*` should you wish to run tests individually for each box.
 
@@ -44,7 +45,7 @@ do exploratory testing.  For example, to do exploratory testing
 on the VirtualBox training environmnet, run the following command:
 
     make ssh-box/virtualbox/win2008r2-standard-nocm.box
-    
+
 Upon logout `make ssh-*` will automatically de-register the box as well.
 
 ### Makefile.local override
@@ -99,4 +100,3 @@ You can also override these setting, such as with
 [CloudBees](http://www.cloudbees.com) is providing a hosted [Jenkins master](http://box-cutter.ci.cloudbees.com/) through their CloudBees FOSS program. Their [On-Premise Executor](https://developer.cloudbees.com/bin/view/DEV/On-Premise+Executors) feature is used to connect physical machines as build slaves running VirtualBox, VMware Fusion, VMware Workstation, VMware ESXi/vSphere and Hyper-V.
 
 ![Powered By CloudBees](http://www.cloudbees.com/sites/default/files/Button-Powered-by-CB.png "Powered By CloudBees")![Built On DEV@Cloud](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png "Built On DEV@Cloud")
-
