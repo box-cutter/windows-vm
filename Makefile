@@ -69,7 +69,7 @@ ifdef PACKER_DEBUG
 else
 	PACKER := packer
 endif
-BUILDER_TYPES ?= vmware virtualbox
+BUILDER_TYPES ?= vmware virtualbox parallels
 ifeq ($(OS),Windows_NT)
 	VAGRANT_PROVIDER ?= vmware_workstation
 else
@@ -81,10 +81,13 @@ BOX_FILES := $(foreach builder, $(BUILDER_TYPES), $(foreach box_filename, $(BOX_
 TEST_BOX_FILES := $(foreach builder, $(BUILDER_TYPES), $(foreach box_filename, $(BOX_FILENAMES), test-box/$(builder)/$(box_filename)))
 VMWARE_BOX_DIR := box/vmware
 VIRTUALBOX_BOX_DIR := box/virtualbox
+PARALLELS_BOX_DIR := box/parallels
 VMWARE_OUTPUT := output-vmware-iso
 VIRTUALBOX_OUTPUT := output-virtualbox-iso
+PARALLELS_OUTPUT := output-parallels-iso
 VMWARE_BUILDER := vmware-iso
 VIRTUALBOX_BUILDER := virtualbox-iso
+PARALLELS_BUILDER := parallels-iso
 CURRENT_DIR := $(shell pwd)
 UNAME_O := $(shell uname -o 2> /dev/null)
 ifeq ($(UNAME_O),Cygwin)
@@ -119,6 +122,10 @@ virtualbox/$(1): $(VIRTUALBOX_BOX_DIR)/$(1)$(BOX_SUFFIX)
 
 virtualbox/$(1)-cygwin: $(VIRTUALBOX_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
 
+parallels/$(1): $(PARALLELS_BOX_DIR)/$(1)$(BOX_SUFFIX)
+
+parallels/$(1)-cygwin: $(PARALLELS_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
+
 test-vmware/$(1): test-$(VMWARE_BOX_DIR)/$(1)$(BOX_SUFFIX)
 
 test-vmware/$(1)-cygwin: test-$(VMWARE_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
@@ -127,6 +134,10 @@ test-virtualbox/$(1): test-$(VIRTUALBOX_BOX_DIR)/$(1)$(BOX_SUFFIX)
 
 test-virtualbox/$(1)-cygwin: test-$(VIRTUALBOX_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
 
+test-parallels/$(1): test-$(PARALLELS_BOX_DIR)/$(1)$(BOX_SUFFIX)
+
+test-parellels/$(1)-cygwin: test-$(PARALLELS_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
+
 ssh-vmware/$(1): ssh-$(VMWARE_BOX_DIR)/$(1)$(BOX_SUFFIX)
 
 ssh-vmware/$(1)-cygwin: ssh-$(VMWARE_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
@@ -134,6 +145,10 @@ ssh-vmware/$(1)-cygwin: ssh-$(VMWARE_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
 ssh-virtualbox/$(1): ssh-$(VIRTUALBOX_BOX_DIR)/$(1)$(BOX_SUFFIX)
 
 ssh-virtualbox/$(1)-cygwin: ssh-$(VIRTUALBOX_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
+
+ssh-parallels/$(1): ssh-$(PARALLELS_BOX_DIR)/$(1)$(BOX_SUFFIX)
+
+ssh-parallels/$(1)-cygwin: ssh-$(PARALLELS_BOX_DIR)/$(1)-cygwin$(BOX_SUFFIX)
 
 endef
 
@@ -675,6 +690,234 @@ $(VIRTUALBOX_BOX_DIR)/win81x86-pro-cygwin$(BOX_SUFFIX): win81x86-pro-cygwin.json
 	mkdir -p $(VIRTUALBOX_BOX_DIR)
 	packer build -only=$(VIRTUALBOX_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_PRO)" -var "iso_checksum=$(WIN81_X86_PRO_CHECKSUM)" $<
 
+# Generic rule - not used currently
+#$(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX): %.json
+#	cd $(dir $<)
+#	rm -rf output-parallels-iso
+#	mkdir -p $(PARALLELS_BOX_DIR)
+#	packer build -only=parallels-iso $(PACKER_VARS) $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-datacenter$(BOX_SUFFIX): win2008r2-datacenter.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/eval-win2008r2-datacenter$(BOX_SUFFIX): eval-win2008r2-datacenter.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(EVAL_WIN2008R2_X64)" -var "iso_checksum=$(EVAL_WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-enterprise$(BOX_SUFFIX): win2008r2-enterprise.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-standard$(BOX_SUFFIX): win2008r2-standard.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-web$(BOX_SUFFIX): win2008r2-web.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-datacenter-cygwin$(BOX_SUFFIX): win2008r2-datacenter-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-enterprise-cygwin$(BOX_SUFFIX): win2008r2-enterprise-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-standard-cygwin$(BOX_SUFFIX): win2008r2-standard-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2008r2-web-cygwin$(BOX_SUFFIX): win2008r2-web-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2008R2_X64)" -var "iso_checksum=$(WIN2008R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012-datacenter$(BOX_SUFFIX): win2012-datacenter.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012_X64)" -var "iso_checksum=$(WIN2012_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012-standard$(BOX_SUFFIX): win2012-standard.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012_X64)" -var "iso_checksum=$(WIN2012_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012-datacenter-cygwin$(BOX_SUFFIX): win2012-datacenter-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012_X64)" -var "iso_checksum=$(WIN2012_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012-standard-cygwin$(BOX_SUFFIX): win2012-standard-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012_X64)" -var "iso_checksum=$(WIN2012_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012r2-datacenter$(BOX_SUFFIX): win2012r2-datacenter.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012R2_X64)" -var "iso_checksum=$(WIN2012R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/eval-win2012r2-datacenter$(BOX_SUFFIX): eval-win2012r2-datacenter.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(EVAL_WIN2012R2_X64)" -var "iso_checksum=$(EVAL_WIN2012R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012r2-standard$(BOX_SUFFIX): win2012r2-standard.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012R2_X64)" -var "iso_checksum=$(WIN2012R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012r2-datacenter-cygwin$(BOX_SUFFIX): win2012r2-datacenter-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012R2_X64)" -var "iso_checksum=$(WIN2012R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win2012r2-standard-cygwin$(BOX_SUFFIX): win2012r2-standard-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN2012R2_X64)" -var "iso_checksum=$(WIN2012R2_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x64-enterprise$(BOX_SUFFIX): win7x64-enterprise.json $(SOURCES) floppy/win7x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X64_ENTERPRISE)" -var "iso_checksum=$(WIN7_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/eval-win7x64-enterprise$(BOX_SUFFIX): eval-win7x64-enterprise.json $(SOURCES) floppy/win7x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(EVAL_WIN7_X64)" -var "iso_checksum=$(EVAL_WIN7_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x86-enterprise$(BOX_SUFFIX): win7x86-enterprise.json $(SOURCES) floppy/win7x86-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X86_ENTERPRISE)" -var "iso_checksum=$(WIN7_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x64-pro$(BOX_SUFFIX): win7x64-pro.json $(SOURCES) floppy/win7x64-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X64_PRO)" -var "iso_checksum=$(WIN7_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x86-pro$(BOX_SUFFIX): win7x86-pro.json $(SOURCES) floppy/win7x86-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X86_PRO)" -var "iso_checksum=$(WIN7_X86_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x64-enterprise-cygwin$(BOX_SUFFIX): win7x64-enterprise-cygwin.json floppy/win7x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X64_ENTERPRISE)" -var "iso_checksum=$(WIN7_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x86-enterprise-cygwin$(BOX_SUFFIX): win7x86-enterprise-cygwin.json floppy/win7x86-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X86_ENTERPRISE)" -var "iso_checksum=$(WIN7_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x64-pro-cygwin$(BOX_SUFFIX): win7x64-pro-cygwin.json floppy/win7x64-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X64_PRO)" -var "iso_checksum=$(WIN7_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win7x86-pro-cygwin$(BOX_SUFFIX): win7x86-pro-cygwin.json floppy/win7x86-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN7_X86_PRO)" -var "iso_checksum=$(WIN7_X86_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x64-enterprise$(BOX_SUFFIX): win8x64-enterprise.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X64_ENTERPRISE)" -var "iso_checksum=$(WIN8_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x64-pro$(BOX_SUFFIX): win8x64-pro.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X64_PRO)" -var "iso_checksum=$(WIN8_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x86-enterprise$(BOX_SUFFIX): win8x86-enterprise.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X86_ENTERPRISE)" -var "iso_checksum=$(WIN8_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x86-pro$(BOX_SUFFIX): win8x86-pro.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X86_PRO)" -var "iso_checksum=$(WIN8_X86_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x64-enterprise-cygwin$(BOX_SUFFIX): win8x64-enterprise-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X64_ENTERPRISE)" -var "iso_checksum=$(WIN8_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x64-pro-cygwin$(BOX_SUFFIX): win8x64-pro-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X64_PRO)" -var "iso_checksum=$(WIN8_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x86-enterprise-cygwin$(BOX_SUFFIX): win8x86-enterprise-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X86_ENTERPRISE)" -var "iso_checksum=$(WIN8_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win8x86-pro-cygwin$(BOX_SUFFIX): win8x86-pro-cygwin.json
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN8_X86_PRO)" -var "iso_checksum=$(WIN8_X86_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x64-enterprise$(BOX_SUFFIX): win81x64-enterprise.json $(SOURCES) floppy/win81x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X64_ENTERPRISE)" -var "iso_checksum=$(WIN81_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/eval-win81x64-enterprise$(BOX_SUFFIX): eval-win81x64-enterprise.json $(SOURCES) floppy/win81x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(EVAL_WIN81_X64)" -var "iso_checksum=$(EVAL_WIN81_X64_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x86-enterprise$(BOX_SUFFIX): win81x86-enterprise.json $(SOURCES) floppy/win81x86-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_ENTERPRISE)" -var "iso_checksum=$(WIN81_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x64-pro$(BOX_SUFFIX): win81x64-pro.json $(SOURCES) floppy/win81x64-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X64_PRO)" -var "iso_checksum=$(WIN81_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x86-pro$(BOX_SUFFIX): win81x86-pro.json $(SOURCES) floppy/win81x86-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_PRO)" -var "iso_checksum=$(WIN81_X86_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x64-enterprise-cygwin$(BOX_SUFFIX): win81x64-enterprise-cygwin.json $(SOURCES) floppy/win81x64-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X64_ENTERPRISE)" -var "iso_checksum=$(WIN81_X64_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x86-enterprise-cygwin$(BOX_SUFFIX): win81x86-enterprise-cygwin.json $(SOURCES) floppy/win81x86-enterprise/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_ENTERPRISE)" -var "iso_checksum=$(WIN81_X86_ENTERPRISE_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x64-pro-cygwin$(BOX_SUFFIX): win81x64-pro-cygwin.json $(SOURCES) floppy/win81x64-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X64_PRO)" -var "iso_checksum=$(WIN81_X64_PRO_CHECKSUM)" $<
+
+$(PARALLELS_BOX_DIR)/win81x86-pro-cygwin$(BOX_SUFFIX): win81x86-pro-cygwin.json $(SOURCES) floppy/win81x86-pro/Autounattend.xml
+	rm -rf $(PARALLELS_OUTPUT)
+	mkdir -p $(PARALLELS_BOX_DIR)
+	packer build -only=$(PARALLELS_BUILDER) $(PACKER_VARS) -var "iso_url=$(WIN81_X86_PRO)" -var "iso_checksum=$(WIN81_X86_PRO_CHECKSUM)" $<
+	
+
 list:
 	@echo "Prepend 'vmware/' or 'virtualbox/' to build only one target platform:"
 	@echo "  make vmware/win7x64"
@@ -716,10 +959,18 @@ test-$(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX): $(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX)
 	rm -f ~/.ssh/known_hosts
 	bin/test-box.sh $< virtualbox virtualbox $(CURRENT_DIR)/test/*_spec.rb
 
+test-$(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX): $(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX)
+	rm -f ~/.ssh/known_hosts
+	bin/test-box.sh $< virtualbox virtualbox $(CURRENT_DIR)/test/*_spec.rb
+
 ssh-$(VMWARE_BOX_DIR)/%$(BOX_SUFFIX): $(VMWARE_BOX_DIR)/%$(BOX_SUFFIX)
 	rm -f ~/.ssh/known_hosts
 	bin/ssh-box.sh $< vmware_desktop $(VAGRANT_PROVIDER) $(CURRENT_DIR)/test/*_spec.rb
 
 ssh-$(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX): $(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX)
+	rm -f ~/.ssh/known_hosts
+	bin/ssh-box.sh $< virtualbox virtualbox $(CURRENT_DIR)/test/*_spec.rb
+
+ssh-$(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX): $(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX)
 	rm -f ~/.ssh/known_hosts
 	bin/ssh-box.sh $< virtualbox virtualbox $(CURRENT_DIR)/test/*_spec.rb
