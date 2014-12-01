@@ -77,20 +77,25 @@ for the Windows install ISO files.
 
 For Windows, the ISO path variables are:
 
+* `EVAL_WIN2008R2_X64`
+* `EVAL_WIN2012R2_X64`
+* `EVAL_WIN7_X64`
+* `EVAL_WIN81_X64`
 * `WIN2008R2_X64`
 * `WIN2012_X64`
-* `WIN2012R2_EVAL_X64`
 * `WIN2012R2_X64`
 * `WIN7_X64_ENTERPRISE`
 * `WIN7_X64_PRO`
 * `WIN7_X86_ENTERPRISE`
 * `WIN7_X86_PRO`
-* `WIN8_X64_ENTERPRISE`
-* `WIN8_X86_ENTERPRISE`
-* `WIN8_X64_PRO`
-* `WIN8_X86_PRO`
 * `WIN81_X64_ENTERPRISE`
 * `WIN81_X64_PRO`
+* `WIN81_X86_ENTERPRISE`
+* `WIN81_X86_PRO`
+* `WIN8_X64_ENTERPRISE`
+* `WIN8_X64_PRO`
+* `WIN8_X86_ENTERPRISE`
+* `WIN8_X86_PRO`
 
 You can also override these setting, such as with
 `WIN81_X64_PRO := file:///Volumes/MSDN/en_windows_8.1_professional_vl_with_update_x64_dvd_4065194.iso
