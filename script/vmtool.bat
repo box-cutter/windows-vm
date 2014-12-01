@@ -9,10 +9,12 @@ if exist "%SystemDrive%\Program Files (x86)" (
   set SEVENZIP_INSTALL=7z922-x64.msi
   set VBOX_INSTALL=VBoxWindowsAdditions-amd64.exe
   set VMWARE_INSTALL=setup64.exe
+  set PARALLELS_INSTALL=PTAgent.exe
 ) else (
   set SEVENZIP_INSTALL=7z922.msi
   set VBOX_INSTALL=VBoxWindowsAdditions-x86.exe
   set VMWARE_INSTALL=setup.exe
+  set PARALLELS_INSTALL=PTAgent.exe
 )
 
 set SEVENZIP_URL=http://downloads.sourceforge.net/sevenzip/%SEVENZIP_INSTALL%
@@ -83,6 +85,18 @@ del /F "%USERPROFILE%\VBoxGuestAdditions.iso"
 goto finish
 
 :parallels
+
+echo ==^> Extracting the Parallels Tools installer
+"%SystemDrive%\Program Files\7-Zip\7z.exe" x -o"%TEMP%\parallels" "%USERPROFILE%\prl-tools-win.iso" "%PARALLELS_INSTALL%"
+
+echo ==^> Installing Parallels Tools
+"%TEMP%\parallels\%PARALLELS_INSTALL%" /install_silent
+
+echo ==^> Cleaning up Parallels Tools install
+del /F /S /Q "%TEMP%\parallels"
+
+echo ==^> Removing "%USERPROFILE%\prl-tools-win.iso"
+del /F "%USERPROFILE%\prl-tools-win.iso"
 
 goto finish
 
