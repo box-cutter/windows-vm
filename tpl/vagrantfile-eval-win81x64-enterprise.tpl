@@ -46,4 +46,10 @@ Vagrant.configure("2") do |config|
         v.vmx["RemoteDisplay.vnc.port"] = "5900"
         v.vmx["scsi0.virtualDev"] = "lsisas1068"
     end
+
+    config.vm.provider :parallels do |v, override|
+        v.customize ["set", :id, "--cpus", 1]
+        v.customize ["set", :id, "--memsize", 768]
+        v.customize ["set", :id, "--videosize", "256"]
+    end
 end

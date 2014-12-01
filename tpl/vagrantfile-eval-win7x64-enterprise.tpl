@@ -50,7 +50,6 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.provider :parallels do |v, override|
-        v.gui = true
         v.customize ["set", :id, "--cpus", 1]
         v.customize ["set", :id, "--memsize", 768]
         v.customize ["set", :id, "--videosize", "256"]
