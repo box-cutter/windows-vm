@@ -95,8 +95,7 @@
         "floppy/passwordchange.bat",
         "floppy/networkprompt.bat",
         "floppy/openssh.bat",
-        "floppy/zz-start-sshd.cmd",
-        "floppy/oracle-cert.cer"
+        "floppy/zz-start-sshd.cmd"
       ],
       "parallels_tools_flavor": "win",
       "shutdown_command": "{{ user `shutdown_command`}}",

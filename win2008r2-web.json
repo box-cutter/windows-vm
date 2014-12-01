@@ -88,8 +88,7 @@
         "floppy/_packer_config.cmd",
         "floppy/passwordchange.bat",
         "floppy/openssh.bat",
-        "floppy/zz-start-sshd.cmd",
-        "floppy/oracle-cert.cer"
+        "floppy/zz-start-sshd.cmd"
       ],
       "parallels_tools_flavor": "win",
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'",
