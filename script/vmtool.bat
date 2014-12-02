@@ -346,13 +346,13 @@ set PRL_ISO_DIR=%TEMP%\parallels
 set PRL_ISO=prl-tools-win.iso
 set PRL_ISO_PATH=%USERPROFILE%\%PRL_ISO%
 
-:install_vbox_guest_additions_from_iso
+:install_parallels_tools_from_iso
 
 call :install_sevenzip
 if errorlevel 1 goto exit1
 
 echo ==^> Extracting the Parallels Tools installer
-7z e -o"%PRL_ISO_DIR%" "%PRL_ISO_PATH%" "%PARALLELS_EXE%"
+7z x -o"%PRL_ISO_DIR%" "%PRL_ISO_PATH%"
 
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: 7z e -o"%PRL_ISO_DIR%" "%PRL_ISO_PATH%" "%PARALLELS_EXE%"
 ver>nul
@@ -364,6 +364,7 @@ if not exist "%PRL_SETUP_PATH%" echo ==^> Unable to unzip "%PRL_ISO_PATH%" & got
 :install_parallels_tools
 
 echo ==^> Installing Parallels Tools
+echo ==^> %PRL_SETUP_PATH% /install_silent
 "%PRL_SETUP_PATH%" /install_silent
 
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: "%PRL_SETUP_PATH%" /install_silent
