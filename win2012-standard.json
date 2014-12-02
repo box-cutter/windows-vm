@@ -65,7 +65,8 @@
       "disk_size": 40960,
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "768"],
-        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+        ["modifyvm", "{{.Name}}", "--cpus", "1"],
+        ["set", "{{.Name}}", "--efi-boot", "off"]
       ]
     },
     {

@@ -103,7 +103,8 @@
       "disk_size": 40960,
       "prlctl": [
         ["set", "{{.Name}}", "--memsize", "768"],
-        ["set", "{{.Name}}", "--cpus", "1"]
+        ["set", "{{.Name}}", "--cpus", "1"],
+        ["set", "{{.Name}}", "--efi-boot", "off"]
       ]
     }
   ],
