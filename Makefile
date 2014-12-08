@@ -981,7 +981,7 @@ test-$(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX): $(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX)
 	bin/test-box.sh $< virtualbox virtualbox $(CURRENT_DIR)/test/*_spec.rb
 
 test-$(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX): $(PARALLELS_BOX_DIR)/%$(BOX_SUFFIX)
-	rm -f ~/.ssh/known_hosts
+	rm -f ~/.ssh/known_hosts || rm -f ~/.ssh/known_hosts
 	bin/test-box.sh $< parallels parallels $(CURRENT_DIR)/test/*_spec.rb
 
 ssh-$(VMWARE_BOX_DIR)/%$(BOX_SUFFIX): $(VMWARE_BOX_DIR)/%$(BOX_SUFFIX)
