@@ -5,7 +5,8 @@
     "cm_version": "",
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
     "iso_checksum": "15ddabafa72071a06d5213b486a02d5b55cb7070",
-    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'"
+    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'",
+    "update": true
   },
   "builders": [
     {
@@ -28,9 +29,7 @@
         "floppy/_packer_config.cmd",
         "floppy/passwordchange.bat",
         "floppy/networkprompt.bat",
-        "floppy/disablewinupdate.ps1",
-        "floppy/rundisablewinupdate.cmd",
-        "floppy/microsoftupdate.bat",
+        "floppy/disablewinupdate.bat",
         "floppy/openssh.bat",
         "floppy/zz-start-sshd.cmd"
       ],
@@ -66,9 +65,7 @@
         "floppy/_packer_config.cmd",
         "floppy/passwordchange.bat",
         "floppy/networkprompt.bat",
-        "floppy/disablewinupdate.ps1",
-        "floppy/rundisablewinupdate.cmd",
-        "floppy/microsoftupdate.bat",
+        "floppy/disablewinupdate.bat",
         "floppy/openssh.bat",
         "floppy/zz-start-sshd.cmd",
         "floppy/oracle-cert.cer"
@@ -122,7 +119,8 @@
       "remote_path": "/tmp/script.bat",
       "environment_vars": [
         "CM={{user `cm`}}",
-        "CM_VERSION={{user `cm_version`}}"
+        "CM_VERSION={{user `cm_version`}}",
+        "UPDATE={{user `update`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
