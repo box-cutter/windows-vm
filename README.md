@@ -19,7 +19,8 @@ Vagrant boxes using Packer.
 
 ## Building the Vagrant boxes
 
-To build all the boxes, you will need both VirtualBox and VMware Fusion installed.
+To build all the boxes, you will need VirtualBox, VMware Fusion, and Parallels
+Desktop installed.
 
 A GNU Make `Makefile` drives the process via the following targets:
 
@@ -104,4 +105,3 @@ You can also override these setting, such as with
 [CloudBees](http://www.cloudbees.com) is providing a hosted [Jenkins master](http://box-cutter.ci.cloudbees.com/) through their CloudBees FOSS program. Their [On-Premise Executor](https://developer.cloudbees.com/bin/view/DEV/On-Premise+Executors) feature is used to connect physical machines as build slaves running VirtualBox, VMware Fusion, VMware Workstation, VMware ESXi/vSphere and Hyper-V.
 
 ![Powered By CloudBees](http://www.cloudbees.com/sites/default/files/Button-Powered-by-CB.png "Powered By CloudBees")![Built On DEV@Cloud](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png "Built On DEV@Cloud")
-

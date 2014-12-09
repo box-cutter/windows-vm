@@ -26,7 +26,7 @@ rmdir /q /s %SystemDrive%\$Recycle.bin
 
 echo ==^> Cleaning "%USERPROFILE%"
 
-for %%i in (VBoxGuestAdditions.iso windows.iso) do if exist "%USERPROFILE%\%%~i" del /f "%USERPROFILE%\%%~i"
+for %%i in (VBoxGuestAdditions.iso windows.iso prl-tools-win.iso) do if exist "%USERPROFILE%\%%~i" del /f "%USERPROFILE%\%%~i"
 
 :exit0
 

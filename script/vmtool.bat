@@ -180,6 +180,10 @@ if not errorlevel 1 goto vmware
 echo "%PACKER_BUILDER_TYPE%" | findstr /i "virtualbox" >nul
 if not errorlevel 1 goto virtualbox
 
+echo "%PACKER_BUILDER_TYPE%" | findstr /i "parallels" >nul
+if not errorlevel 1 goto parallels
+
+
 echo ==^> ERROR: Unknown PACKER_BUILDER_TYPE: "%PACKER_BUILDER_TYPE%"
 
 pushd .
@@ -355,6 +359,45 @@ echo ==^> Installing VirtualBox Guest Additions
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: "%VBOX_SETUP_PATH%" /S
 ver>nul
 
+goto :exit0
+
+::::::::::::
+:parallels
+::::::::::::
+set PARALLELS_INSTALL=PTAgent.exe
+
+REM parallels tools don't have a download :(
+
+call :install_sevenzip
+if errorlevel 1 goto exit1
+
+echo ==^> Extracting the Parallels Tools installer
+echo ==^>   to %TEMP%\parallels\*
+7z x -o"%TEMP%\parallels" "%USERPROFILE%\prl-tools-win.iso"
+
+ping 127.0.0.1
+
+echo ==^> Installing Parallels Tools
+echo ==^>   from %TEMP%\parallels\%PARALLELS_INSTALL%
+"%TEMP%\parallels\%PARALLELS_INSTALL%" /install_silent
+
+REM parallels tools installer tends to exit while the install agent
+REM is still running, need to sleep while it's running so we don't
+REM delete the tools.
+
+@if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: "%PARALLELS_INSTALL%" /install_silent
+ver>nul
+
+echo ==^> Cleaning up Parallels Tools install
+del /F /S /Q "%TEMP%\parallels"
+
+echo ==^> Removing "%USERPROFILE%\prl-tools-win.iso"
+del /F "%USERPROFILE%\prl-tools-win.iso"
+
+goto :exit0
+
+
+
 :exit0
 
 popd
@@ -374,3 +417,4 @@ popd
 @echo ==^> Script exiting with errorlevel %ERRORLEVEL%
 @exit /b %ERRORLEVEL%
 
+exit 0
