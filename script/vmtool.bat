@@ -372,16 +372,20 @@ call :install_sevenzip
 if errorlevel 1 goto exit1
 
 echo ==^> Extracting the Parallels Tools installer
-7z x -o"%TEMP%\parallels" "%USERPROFILE%\prl-tools-win.iso" "%PARALLELS_INSTALL%"
+echo ==^>   to %TEMP%\parallels\*
+7z x -o"%TEMP%\parallels" "%USERPROFILE%\prl-tools-win.iso"
+
+ping 127.0.0.1
 
 echo ==^> Installing Parallels Tools
-start /wait "%TEMP%\parallels\%PARALLELS_INSTALL%" /install_silent
+echo ==^>   from %TEMP%\parallels\%PARALLELS_INSTALL%
+"%TEMP%\parallels\%PARALLELS_INSTALL%" /install_silent
 
 REM parallels tools installer tends to exit while the install agent
 REM is still running, need to sleep while it's running so we don't
 REM delete the tools.
 
-@if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: "%PARALLELS_INSTALL%" /S
+@if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: "%PARALLELS_INSTALL%" /install_silent
 ver>nul
 
 echo ==^> Cleaning up Parallels Tools install
