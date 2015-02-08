@@ -6,7 +6,7 @@
     "iso_url": "./iso/SW_DVD5_SA_Win_Ent_8.1_64BIT_English_MLF_X18-96759.ISO",
     "iso_checksum": "8e194185fcce4ea737f274ee9005ddf0",
     "update": true,
-    "sysprep": "youcanliterallyputanythinghereyouwantaslongasthevariableisdefined",
+    "sysprep": "true",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'"
   },
   "builders": [
