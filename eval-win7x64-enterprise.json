@@ -6,7 +6,8 @@
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
     "iso_checksum": "15ddabafa72071a06d5213b486a02d5b55cb7070",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'",
-    "update": true
+    "update": true,
+    "sysprep": "true"
   },
   "builders": [
     {
@@ -20,6 +21,7 @@
       "ssh_password": "vagrant",
       "floppy_files": [
         "floppy/win7x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/fixnetwork.ps1",
@@ -57,6 +59,7 @@
       "disk_size": 40960,
       "floppy_files": [
         "floppy/win7x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",        
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/fixnetwork.ps1",
@@ -92,6 +95,7 @@
       "disk_size": 40960,
       "floppy_files": [
         "floppy/win7x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",        
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/fixnetwork.ps1",
@@ -122,7 +126,8 @@
       "environment_vars": [
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
-        "UPDATE={{user `update`}}"
+        "UPDATE={{user `update`}}",
+        "SYSPREP={{user `sysprep`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
@@ -132,7 +137,8 @@
         "script/clean.bat",
         "script/ultradefrag.bat",
         "script/uninstall-7zip.bat",
-        "script/sdelete.bat"
+        "script/sdelete.bat",
+        "script/sysprep-generalize.bat"
       ]
     },
     {

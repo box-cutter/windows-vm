@@ -1,8 +1,14 @@
 @ECHO OFF
 @ECHO ==^> Running sysprep if requested in template file...
+@if not defined sysprep ( 
+  @ECHO ==^> No sysprep variable defined, exiting
+  GOTO :eof
+)
 @echo %SYSPREP% | findstr /I "true"
-@if errorlevel 1 GOTO :eof
-
+@if errorlevel 1 (
+  @ECHO ==^> Sysprep variable not set to true, exiting
+  GOTO :eof
+)
 @ECHO ==^> Copying unattend.xml to sysprep directory
 @COPY /Y A:\unattend.xml %WINDIR%\system32\sysprep
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: COPY command

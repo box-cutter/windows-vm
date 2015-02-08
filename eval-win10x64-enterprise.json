@@ -6,6 +6,7 @@
     "iso_url": "http://iso.esd.microsoft.com/W9TPI/B6B0A0278A90510669EAB90ABF80B22A/Windows10_TechnicalPreview_x64_EN-US_9926.iso",
     "iso_checksum": "6a95316728299d95249a29fbeb9676ded23b8beb",
     "update": true,
+    "sysprep": "true",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'"
   },
   "builders": [
@@ -21,6 +22,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win10x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -55,6 +57,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win10x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -88,6 +91,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win10x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -116,7 +120,8 @@
       "environment_vars": [
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
-        "UPDATE={{user `update`}}"
+        "UPDATE={{user `update`}}",
+        "SYSPREP={{user `sysprep`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
@@ -126,7 +131,8 @@
         "script/clean.bat",
         "script/ultradefrag.bat",
         "script/uninstall-7zip.bat",
-        "script/sdelete.bat"
+        "script/sdelete.bat",
+        "script/sysprep-generalize.bat"
       ]
     },
     {
