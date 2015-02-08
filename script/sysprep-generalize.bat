@@ -13,7 +13,7 @@
 @COPY /Y A:\unattend.xml %WINDIR%\system32\sysprep
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: COPY command
 
-@ECHO ==^> Running sysprep /oobe /generalize with Unattend file
+@ECHO ==^> Running sysprep /oobe /generalize with unattend.xml file
 @PUSHD %WINDIR%\system32\sysprep
 
 :: Credit to http://stackoverflow.com/questions/4808847/how-to-compare-windows-versions-in-a-batch-script
@@ -25,15 +25,20 @@
   @set Version.Build=%%c
 )
 @ECHO ==^> Checking OS Version for sysprep command parameters
-@if %Version.Major% EQU 6 if %Version.Minor% GEQ 2 (
+@if %Version.Major% GEQ 7 GOTO :modevm
+@if %Version.Major% EQU 6 if %Version.Minor% GEQ 2 GOTO :modevm
+@if %Version.Major% EQU 6 if %Version.Minor% LEQ 1 GOTO :generalize
+
+:modevm
   @ECHO ==^> Windows 8 Kernel or higher found, supports /mode:vm
   sysprep.exe /oobe /generalize /mode:vm /quit
-)
-@if %Version.Major% EQU 6 if %Version.Minor% LEQ 1 (
+  GOTO :eof
+
+:generalize
   @ECHO ==^> Windows 7 Kernel found
   sysprep.exe /oobe /generalize /quit
-)
-@if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: sysprep.exe
+  GOTO :eof
 
 :eof 
+@if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: sysprep.exe
 @exit /b %ERRORLEVEL%
