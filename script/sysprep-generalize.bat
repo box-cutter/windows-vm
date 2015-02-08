@@ -1,20 +1,20 @@
-@ECHO OFF
-@ECHO ==^> Running sysprep if requested in template file...
+@echo OFF
+@echo ==^> Running sysprep if requested in template file...
 @if not defined sysprep ( 
-  @ECHO ==^> No sysprep variable defined, exiting
-  GOTO :eof
+  @echo ==^> No sysprep variable defined, exiting
+  @goto :eof
 )
 @echo %SYSPREP% | findstr /I "true"
 @if errorlevel 1 (
-  @ECHO ==^> Sysprep variable not set to true, exiting
-  GOTO :eof
+  @echo ==^> Sysprep variable not set to true, exiting
+  @goto :eof
 )
-@ECHO ==^> Copying unattend.xml to sysprep directory
-@COPY /Y A:\unattend.xml %WINDIR%\system32\sysprep
+@echo ==^> Copying unattend.xml to sysprep directory
+@copy /Y A:\unattend.xml %WINDIR%\system32\sysprep
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: COPY command
 
-@ECHO ==^> Running sysprep /oobe /generalize with unattend.xml file
-@PUSHD %WINDIR%\system32\sysprep
+@echo ==^> Running sysprep /oobe /generalize with unattend.xml file
+@pushd %WINDIR%\system32\sysprep
 
 :: Credit to http://stackoverflow.com/questions/4808847/how-to-compare-windows-versions-in-a-batch-script
 @set Version=
@@ -24,20 +24,20 @@
   @set Version.Minor=%%b
   @set Version.Build=%%c
 )
-@ECHO ==^> Checking OS Version for sysprep command parameters
-@if %Version.Major% GEQ 7 GOTO :modevm
-@if %Version.Major% EQU 6 if %Version.Minor% GEQ 2 GOTO :modevm
-@if %Version.Major% EQU 6 if %Version.Minor% LEQ 1 GOTO :generalize
+@echo ==^> Checking OS Version for sysprep command parameters
+@if %Version.Major% GEQ 7 goto :modevm
+@if %Version.Major% EQU 6 if %Version.Minor% GEQ 2 goto :modevm
+@if %Version.Major% EQU 6 if %Version.Minor% LEQ 1 goto :generalize
 
 :modevm
-  @ECHO ==^> Windows 8 Kernel or higher found, supports /mode:vm
+  @echo ==^> Windows 8 Kernel or higher found, supports /mode:vm
   sysprep.exe /oobe /generalize /mode:vm /quit
-  GOTO :eof
+  @goto :eof
 
 :generalize
-  @ECHO ==^> Windows 7 Kernel found
+  @echo ==^> Windows 7 Kernel found
   sysprep.exe /oobe /generalize /quit
-  GOTO :eof
+  @goto :eof
 
 :eof 
 @if errorlevel 1 echo ==^> WARNING: Error %ERRORLEVEL% was returned by: sysprep.exe
