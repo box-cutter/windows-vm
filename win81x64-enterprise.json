@@ -115,7 +115,7 @@
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
         "UPDATE={{user `update`}}",
-        "SYSPREP={{user `sysprep`}}",
+        "SYSPREP={{user `sysprep`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
@@ -124,7 +124,7 @@
         "script/vmtool.bat",
         "script/ultradefrag.bat",
         "script/uninstall-7zip.bat",
-        "script/sdelete.bat"
+        "script/sdelete.bat",
         "script/sysprep-generalize.bat"
       ]
     },
