@@ -3,9 +3,10 @@
     "version": "0.1.0",
     "cm": "chef",
     "cm_version": "",
-    "iso_url": "iso/en_windows_8_enterprise_x64_dvd_917522.iso",
+    "iso_url": "iso/SW_DVD5_SA_Win_Ent_8_64BIT_English_Full_MLF_X18-16254.ISO",
     "iso_checksum": "4eadfe83e736621234c63e8465986f0af6aa3c82",
     "update": true,
+    "sysprep": "true",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'"
   },
   "builders": [
@@ -20,6 +21,7 @@
       "ssh_password": "vagrant",
       "floppy_files": [
         "floppy/win8x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -52,6 +54,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/win8x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -82,6 +85,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/win8x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -108,7 +112,8 @@
       "environment_vars": [
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
-        "UPDATE={{user `update`}}"
+        "UPDATE={{user `update`}}",
+        "SYSPREP={{user `sysprep`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
@@ -118,7 +123,8 @@
         "script/clean.bat",
         "script/ultradefrag.bat",
         "script/uninstall-7zip.bat",
-        "script/sdelete.bat"
+        "script/sdelete.bat",
+        "script/sysprep-generalize.bat"
       ]
     },
     {

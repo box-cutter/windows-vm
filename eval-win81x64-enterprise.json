@@ -6,6 +6,7 @@
     "iso_url": "http://download.microsoft.com/download/B/9/9/B999286E-0A47-406D-8B3D-5B5AD7373A4A/9600.16384.WINBLUE_RTM.130821-1623_X64FRE_ENTERPRISE_EVAL_EN-US-IRM_CENA_X64FREE_EN-US_DV5.ISO",
     "iso_checksum": "73321fa912305e5a16096ef62380a91ee1f112da",
     "update": true,
+    "sysprep": "false",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c 'Packer Shutdown'"
   },
   "builders": [
@@ -21,6 +22,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win81x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -55,6 +57,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win81x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -62,7 +65,6 @@
         "floppy/_download.cmd",
         "floppy/_packer_config.cmd",
         "floppy/passwordchange.bat",
-        "floppy/update.bat",
         "floppy/disablewinupdate.bat",
         "floppy/openssh.bat",
         "floppy/zz-start-sshd.cmd",
@@ -88,6 +90,7 @@
       "ssh_wait_timeout": "10000s",
       "floppy_files": [
         "floppy/eval-win81x64-enterprise/Autounattend.xml",
+        "floppy/sysprep/unattend.xml",
         "floppy/00-run-all-scripts.cmd",
         "floppy/install-winrm.cmd",
         "floppy/powerconfig.bat",
@@ -116,7 +119,8 @@
       "environment_vars": [
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
-        "UPDATE={{user `update`}}"
+        "UPDATE={{user `update`}}",
+        "SYSPREP={{user `sysprep`}}"
       ],
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
@@ -126,7 +130,8 @@
         "script/clean.bat",
         "script/ultradefrag.bat",
         "script/uninstall-7zip.bat",
-        "script/sdelete.bat"
+        "script/sdelete.bat",
+        "script/sysprep-generalize.bat"
       ]
     },
     {
